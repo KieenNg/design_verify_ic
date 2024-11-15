@@ -1,89 +1,127 @@
-E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Arith_ALU.vp {1 {vlog -work work -vopt -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Arith_ALU.vp
+E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Arith_ALU.vp {1 {vlog -work work -vopt -covercells -coverExcludeDefault -nocoverfec -nocovershort -cover sbceft3 -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Arith_ALU.vp
 QuestaSim-64 vlog 10.7c Compiler 2018.08 Aug 18 2018
 -- Compiling module Arith_ALU
 
 Top level modules:
 	Arith_ALU
 
-} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/DriverBase.sv {1 {vlog -work work -vopt -sv -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/DriverBase.sv
+} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Generator.sv {1 {vlog -work work -vopt -sv -covercells -coverExcludeDefault -nocoverfec -nocovershort -cover sbceft3 -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Generator.sv
 QuestaSim-64 vlog 10.7c Compiler 2018.08 Aug 18 2018
 
 Top level modules:
 	--none--
 
-} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Generator.sv {1 {vlog -work work -vopt -sv -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Generator.sv
+} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/DriverBase.sv {1 {vlog -work work -vopt -sv -covercells -coverExcludeDefault -nocoverfec -nocovershort -cover sbceft3 -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/DriverBase.sv
 QuestaSim-64 vlog 10.7c Compiler 2018.08 Aug 18 2018
 
 Top level modules:
 	--none--
 
-} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Packet.sv {1 {vlog -work work -vopt -sv -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Packet.sv
+} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Packet.sv {1 {vlog -work work -vopt -sv -covercells -coverExcludeDefault -nocoverfec -nocovershort -cover sbceft3 -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Packet.sv
 QuestaSim-64 vlog 10.7c Compiler 2018.08 Aug 18 2018
 
 Top level modules:
 	--none--
 
-} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Shift_ALU.vp {1 {vlog -work work -vopt -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Shift_ALU.vp
+} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Execute.if.sv {1 {vlog -work work -vopt -sv -covercells -coverExcludeDefault -nocoverfec -nocovershort -cover sbceft3 -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Execute.if.sv
+QuestaSim-64 vlog 10.7c Compiler 2018.08 Aug 18 2018
+-- Compiling interface Execute_io
+-- Compiling interface DUT_probe_if
+
+Top level modules:
+	--none--
+
+} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Driver.sv {1 {vlog -work work -vopt -sv -covercells -coverExcludeDefault -nocoverfec -nocovershort -cover sbceft3 -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Driver.sv
+QuestaSim-64 vlog 10.7c Compiler 2018.08 Aug 18 2018
+
+Top level modules:
+	--none--
+
+} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Shift_ALU.vp {1 {vlog -work work -vopt -covercells -coverExcludeDefault -nocoverfec -nocovershort -cover sbceft3 -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Shift_ALU.vp
 QuestaSim-64 vlog 10.7c Compiler 2018.08 Aug 18 2018
 -- Compiling module Shift_ALU
 
 Top level modules:
 	Shift_ALU
 
-} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Ex_Preproc.vp {1 {vlog -work work -vopt -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Ex_Preproc.vp
+} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Ex_Preproc.vp {1 {vlog -work work -vopt -covercells -coverExcludeDefault -nocoverfec -nocovershort -cover sbceft3 -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Ex_Preproc.vp
 QuestaSim-64 vlog 10.7c Compiler 2018.08 Aug 18 2018
 -- Compiling module Ex_Preproc
 
 Top level modules:
 	Ex_Preproc
 
-} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/ALU.vp {1 {vlog -work work -vopt -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/ALU.vp
+} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Execute.tb.sv {2 {vlog -work work -vopt -sv -covercells -coverExcludeDefault -nocoverfec -nocovershort -cover sbceft3 -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Execute.tb.sv
+QuestaSim-64 vlog 10.7c Compiler 2018.08 Aug 18 2018
+-- Compiling package Execute_tb_sv_unit
+** Warning: OutputPacket.sv(24): (vlog-2217) No default specified for 'name'.  Default must match the value specified in class at OutputPacket.sv(20) for strict LRM compliance.
+** Warning: ReceiverBase.sv(28): (vlog-2217) No default specified for 'name'.  Default must match the value specified in class at ReceiverBase.sv(23) for strict LRM compliance.
+** Warning: Receiver.sv(11): (vlog-2217) No default specified for 'name'.  Default must match the value specified in class at Receiver.sv(7) for strict LRM compliance.
+** Warning: Scoreboard.sv(40): (vlog-2217) No default specified for 'name'.  Default must match the value specified in class at Scoreboard.sv(31) for strict LRM compliance.
+** Warning: Scoreboard.sv(40): (vlog-2217) No default specified for 'driver_mbox'.  Default must match the value specified in class at Scoreboard.sv(31) for strict LRM compliance.
+** Warning: Scoreboard.sv(40): (vlog-2217) No default specified for 'receiver_mbox'.  Default must match the value specified in class at Scoreboard.sv(31) for strict LRM compliance.
+** Warning: Scoreboard.sv(106): (vlog-2121) Illegal concatenation of an unsized constant. Will treat it as a 32-bit value.
+** Warning: Scoreboard.sv(115): (vlog-2121) Illegal concatenation of an unsized constant. Will treat it as a 32-bit value.
+** Warning: Scoreboard.sv(118): (vlog-2121) Illegal concatenation of an unsized constant. Will treat it as a 32-bit value.
+** Warning: Scoreboard.sv(127): (vlog-2121) Illegal concatenation of an unsized constant. Will treat it as a 32-bit value.
+-- Compiling program Execute_test
+** Warning: OutputPacket.sv(24): (vlog-2217) No default specified for 'name'.  Default must match the value specified in class at OutputPacket.sv(20) for strict LRM compliance.
+** Warning: ReceiverBase.sv(28): (vlog-2217) No default specified for 'name'.  Default must match the value specified in class at ReceiverBase.sv(23) for strict LRM compliance.
+** Warning: Receiver.sv(11): (vlog-2217) No default specified for 'name'.  Default must match the value specified in class at Receiver.sv(7) for strict LRM compliance.
+** Warning: Scoreboard.sv(40): (vlog-2217) No default specified for 'name'.  Default must match the value specified in class at Scoreboard.sv(31) for strict LRM compliance.
+** Warning: Scoreboard.sv(40): (vlog-2217) No default specified for 'driver_mbox'.  Default must match the value specified in class at Scoreboard.sv(31) for strict LRM compliance.
+** Warning: Scoreboard.sv(40): (vlog-2217) No default specified for 'receiver_mbox'.  Default must match the value specified in class at Scoreboard.sv(31) for strict LRM compliance.
+
+Top level modules:
+	Execute_test
+
+} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/ALU.vp {1 {vlog -work work -vopt -covercells -coverExcludeDefault -nocoverfec -nocovershort -cover sbceft3 -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/ALU.vp
 QuestaSim-64 vlog 10.7c Compiler 2018.08 Aug 18 2018
 -- Compiling module ALU
 
 Top level modules:
 	ALU
 
-} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/ReceiverBase.sv {1 {vlog -work work -vopt -sv -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/ReceiverBase.sv
+} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/data_defs.v {1 {vlog -work work -vopt -covercells -coverExcludeDefault -nocoverfec -nocovershort -cover sbceft3 -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/data_defs.v
+QuestaSim-64 vlog 10.7c Compiler 2018.08 Aug 18 2018
+
+} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/ReceiverBase.sv {1 {vlog -work work -vopt -sv -covercells -coverExcludeDefault -nocoverfec -nocovershort -cover sbceft3 -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/ReceiverBase.sv
 QuestaSim-64 vlog 10.7c Compiler 2018.08 Aug 18 2018
 
 Top level modules:
 	--none--
 
-} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/data_defs.v {1 {vlog -work work -vopt -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/data_defs.v
-QuestaSim-64 vlog 10.7c Compiler 2018.08 Aug 18 2018
-
-} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Top.v {1 {vlog -work work -vopt -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Top.v
+} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Top.v {1 {vlog -work work -vopt -covercells -coverExcludeDefault -nocoverfec -nocovershort -cover sbceft3 -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Top.v
 QuestaSim-64 vlog 10.7c Compiler 2018.08 Aug 18 2018
 -- Compiling module Top
 
 Top level modules:
 	Top
 
-} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/OutputPacket.sv {1 {vlog -work work -vopt -sv -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/OutputPacket.sv
+} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/OutputPacket.sv {1 {vlog -work work -vopt -sv -covercells -coverExcludeDefault -nocoverfec -nocovershort -cover sbceft3 -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/OutputPacket.sv
 QuestaSim-64 vlog 10.7c Compiler 2018.08 Aug 18 2018
 
 Top level modules:
 	--none--
 
-} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Execute.test_top.sv {1 {vlog -work work -vopt -sv -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Execute.test_top.sv
+} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Execute.test_top.sv {1 {vlog -work work -vopt -sv -covercells -coverExcludeDefault -nocoverfec -nocovershort -cover sbceft3 -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Execute.test_top.sv
 QuestaSim-64 vlog 10.7c Compiler 2018.08 Aug 18 2018
 -- Compiling module Execute_test_top
 
 Top level modules:
 	Execute_test_top
 
-} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Scoreboard.sv {2 {vlog -work work -vopt -sv -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Scoreboard.sv
+} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Scoreboard.sv {2 {vlog -work work -vopt -sv -covercells -coverExcludeDefault -nocoverfec -nocovershort -cover sbceft3 -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Scoreboard.sv
 QuestaSim-64 vlog 10.7c Compiler 2018.08 Aug 18 2018
-** Warning: E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Scoreboard.sv(101): (vlog-2121) Illegal concatenation of an unsized constant. Will treat it as a 32-bit value.
-** Warning: E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Scoreboard.sv(110): (vlog-2121) Illegal concatenation of an unsized constant. Will treat it as a 32-bit value.
-** Warning: E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Scoreboard.sv(113): (vlog-2121) Illegal concatenation of an unsized constant. Will treat it as a 32-bit value.
-** Warning: E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Scoreboard.sv(122): (vlog-2121) Illegal concatenation of an unsized constant. Will treat it as a 32-bit value.
+** Warning: E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Scoreboard.sv(106): (vlog-2121) Illegal concatenation of an unsized constant. Will treat it as a 32-bit value.
+** Warning: E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Scoreboard.sv(115): (vlog-2121) Illegal concatenation of an unsized constant. Will treat it as a 32-bit value.
+** Warning: E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Scoreboard.sv(118): (vlog-2121) Illegal concatenation of an unsized constant. Will treat it as a 32-bit value.
+** Warning: E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Scoreboard.sv(127): (vlog-2121) Illegal concatenation of an unsized constant. Will treat it as a 32-bit value.
 
 Top level modules:
 	--none--
 
-} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Receiver.sv {1 {vlog -work work -vopt -sv -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Receiver.sv
+} {} {}} E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Receiver.sv {1 {vlog -work work -vopt -sv -covercells -coverExcludeDefault -nocoverfec -nocovershort -cover sbceft3 -stats=none E:/Tailieu_giaotrinh/kiem_chung_vi_mach/lab/lab3/Lab3_edited/Receiver.sv
 QuestaSim-64 vlog 10.7c Compiler 2018.08 Aug 18 2018
 
 Top level modules:

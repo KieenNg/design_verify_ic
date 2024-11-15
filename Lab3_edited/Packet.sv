@@ -15,7 +15,7 @@ class Packet;
 	string 	name;
 	
 	constraint Limit {
-		src1 inside	{[0:65534]};
+		src1 inside	{[0:65534]}; //2^16
 		src2 inside	{[0:65534]};
 		imm inside	{[0:65534]};
 		mem_data inside	{[0:65534]};

@@ -23,7 +23,6 @@ function Generator::new(string name = "Generator", int number_packets);
 endfunction
 
 task Generator::gen();
-	  
 	pkt2send.name = $psprintf("Packet[%0d]", packet_number++);
 	if (!pkt2send.randomize()) 
 	begin

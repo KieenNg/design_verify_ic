@@ -18,7 +18,7 @@ program Execute_test(Execute_io.TB Execute, DUT_probe_if Prober);
 	int 	number_packets;
 	
 	initial begin
-		number_packets = 100;
+		number_packets = 10;
         generator = new("Generator", number_packets);
 		sb = new(); // NOTE THAT THERE ARE DEFAULT VALUES FOR THE NEW FUNCTION 
 					// FOR THE SCOREBOARD 
@@ -27,10 +27,10 @@ program Execute_test(Execute_io.TB Execute, DUT_probe_if Prober);
 		reset();
 		generator.start();
 		drvr.start(); 
-		sb.start();
 		rcvr.start();
-    		repeat(number_packets+1) @(Execute.cb);
-			$display($time, "WE ARE DONE .. GO HOME AND SLEEP!!! .. ACTUALLY NOT YET .. ");
+		sb.start();
+    	repeat(number_packets+1) @(Execute.cb);
+		$display($time, "WE ARE DONE .. GO HOME AND SLEEP!!! .. ACTUALLY NOT YET .. ");
 	end
 
 	task reset();

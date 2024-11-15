@@ -1,0 +1,243 @@
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <title>Questa Coverage Report</title>
+  <link rel="StyleSheet" media="screen" href="../css/hdl2html.css"/>
+</head>
+<body id="hdl2html">
+  <tt>
+<pre>
+<a name="1"><q-n>     1  </q-n></a>`<q-i>include</q-w> <q-l>"data_defs.v"</q-l>
+<a name="2"><q-n>     2  </q-n></a>`<q-i>include</q-w> <q-l>"<a href="__HDL_srcfile_9.htm">Packet.sv</a>"</q-l>
+<a name="3"><q-n>     3  </q-n></a>`<q-i>include</q-w> <q-l>"<a href="__HDL_srcfile_10.htm">OutputPacket.sv</a>"</q-l>
+<a name="4"><q-n>     4  </q-n></a><q-w>class</q-w> Scoreboard;
+<a name="5"><q-n>     5  </q-n></a>    <q-w>string</q-w>   name;			<q-m>// unique identifier</q-m>
+<a name="6"><q-n>     6  </q-n></a>    Packet pkt_sent = <q-w>new</q-w>();	<q-m>// Packet object from Driver</q-m>
+<a name="7"><q-n>     7  </q-n></a>    OutputPacket   pkt2cmp = <q-w>new</q-w>();		<q-m>// Packet object from Receiver</q-m>
+<a name="8"><q-n>     8  </q-n></a>
+<a name="9"><q-n>     9  </q-n></a>    <q-w>typedef</q-w> mailbox #(Packet) out_box_type;
+<a name="10"><q-n>     10  </q-n></a>    out_box_type driver_mbox;		<q-m>// mailbox for Packet objects from Drivers</q-m>
+<a name="11"><q-n>     11  </q-n></a>
+<a name="12"><q-n>     12  </q-n></a>    <q-w>typedef</q-w> mailbox #(OutputPacket) rx_box_type;
+<a name="13"><q-n>     13  </q-n></a>    rx_box_type 	receiver_mbox;		<q-m>// mailbox for Packet objects from Receiver</q-m>
+<a name="14"><q-n>     14  </q-n></a>
+<a name="15"><q-n>     15  </q-n></a>	<q-m>// Declare the signals to be compared over here.</q-m>
+<a name="16"><q-n>     16  </q-n></a>       <q-w>reg</q-w>	[`REGISTER_WIDTH-1:0] 	aluout_chk = 0;
+<a name="17"><q-n>     17  </q-n></a>       <q-w>reg</q-w>				mem_en_chk = 0;
+<a name="18"><q-n>     18  </q-n></a>       <q-w>reg</q-w>	[`REGISTER_WIDTH-1:0] 	memout_chk = 0;
+<a name="19"><q-n>     19  </q-n></a>
+<a name="20"><q-n>     20  </q-n></a>       <q-w>reg</q-w>	[`REGISTER_WIDTH-1:0]	aluin1_chk =0 , aluin2_chk=0; 
+<a name="21"><q-n>     21  </q-n></a>       <q-w>reg</q-w>	[2:0]			opselect_chk=0;
+<a name="22"><q-n>     22  </q-n></a>       <q-w>reg</q-w>	[2:0]			operation_chk=0;	
+<a name="23"><q-n>     23  </q-n></a>       <q-w>reg</q-w>	[4:0]          		shift_number_chk=0;
+<a name="24"><q-n>     24  </q-n></a>       <q-w>reg</q-w>				enable_shift_chk=0, enable_arith_chk=0;
+<a name="25"><q-n>     25  </q-n></a>       <q-w>reg</q-w>	[16:0] 			aluout_half_chk;
+<a name="26"><q-n>     26  </q-n></a>	
+<a name="27"><q-n>     27  </q-n></a>       <q-w>extern</q-w> <q-w>function</q-w> <q-w>new</q-w>(<q-w>string</q-w> name = <q-l>"Scoreboard"</q-l>, out_box_type driver_mbox = <q-w>null</q-w>, rx_box_type receiver_mbox = <q-w>null</q-w>);
+<a name="28"><q-n>     28  </q-n></a>       <q-w>extern</q-w> <q-w>virtual</q-w> <q-w>task</q-w> start();
+<a name="29"><q-n>     29  </q-n></a>       <q-w>extern</q-w> <q-w>virtual</q-w> <q-w>task</q-w> check();
+<a name="30"><q-n>     30  </q-n></a>       <q-w>extern</q-w> <q-w>virtual</q-w> <q-w>task</q-w> check_arith();
+<a name="31"><q-n>     31  </q-n></a>       <q-w>extern</q-w> <q-w>virtual</q-w> <q-w>task</q-w> check_preproc();
+<a name="32"><q-n>     32  </q-n></a>	
+<a name="33"><q-n>     33  </q-n></a><q-w>endclass</q-w>
+<a name="34"><q-n>     34  </q-n></a>
+<a name="35"><q-n>     35  </q-n></a><q-w>function</q-w> Scoreboard::<q-w>new</q-w>(<q-w>string</q-w> name, out_box_type driver_mbox, rx_box_type receiver_mbox);
+<a name="36"><q-n>     36  </q-n></a>       <q-w>this</q-w>.name = name;
+<a name="37"><q-n>     37  </q-n></a>       <q-w>if</q-w> (driver_mbox == <q-w>null</q-w>) 
+<a name="38"><q-n>     38  </q-n></a>	       driver_mbox = <q-w>new</q-w>();
+<a name="39"><q-n>     39  </q-n></a>       <q-w>if</q-w> (receiver_mbox == <q-w>null</q-w>) 
+<a name="40"><q-n>     40  </q-n></a>	       receiver_mbox = <q-w>new</q-w>();
+<a name="41"><q-n>     41  </q-n></a>       <q-w>this</q-w>.driver_mbox = driver_mbox;
+<a name="42"><q-n>     42  </q-n></a>       <q-w>this</q-w>.receiver_mbox = receiver_mbox;
+<a name="43"><q-n>     43  </q-n></a><q-w>endfunction</q-w>
+<a name="44"><q-n>     44  </q-n></a>
+<a name="45"><q-n>     45  </q-n></a><q-w>task</q-w> Scoreboard::start();
+<a name="46"><q-n>     46  </q-n></a>       $display ($<q-w>time</q-w>, <q-l>"[SCOREBOARD] Scoreboard Started"</q-l>);
+<a name="47"><q-n>     47  </q-n></a>
+<a name="48"><q-n>     48  </q-n></a>       $display ($<q-w>time</q-w>, <q-l>"[SCOREBOARD] Receiver Mailbox contents = %d"</q-l>, receiver_mbox.num());
+<a name="49"><q-n>     49  </q-n></a>       <q-w>fork</q-w>
+<a name="50"><q-n>     50  </q-n></a>	       <q-w>forever</q-w> 
+<a name="51"><q-n>     51  </q-n></a>	       <q-w>begin</q-w>
+<a name="52"><q-n>     52  </q-n></a>		       <q-w>if</q-w>(receiver_mbox.try_get(pkt2cmp)) <q-w>begin</q-w>
+<a name="53"><q-n>     53  </q-n></a>			       $display ($<q-w>time</q-w>, <q-l>"[SCOREBOARD] Grabbing Data From both Driver and Receiver"</q-l>);
+<a name="54"><q-n>     54  </q-n></a>			       <q-m>//receiver_mbox.get(pkt2cmp);</q-m>
+<a name="55"><q-n>     55  </q-n></a>			       driver_mbox.get(pkt_sent);
+<a name="56"><q-n>     56  </q-n></a>			       check();
+<a name="57"><q-n>     57  </q-n></a>		       <q-w>end</q-w>
+<a name="58"><q-n>     58  </q-n></a>		       <q-w>else</q-w> 
+<a name="59"><q-n>     59  </q-n></a>		       <q-w>begin</q-w>
+<a name="60"><q-n>     60  </q-n></a>			       #1;
+<a name="61"><q-n>     61  </q-n></a>		       <q-w>end</q-w>
+<a name="62"><q-n>     62  </q-n></a>	       <q-w>end</q-w>
+<a name="63"><q-n>     63  </q-n></a>       <q-w>join_none</q-w>
+<a name="64"><q-n>     64  </q-n></a>       $display ($<q-w>time</q-w>, <q-l>"[SCOREBOARD] Forking of Process Finished"</q-l>);
+<a name="65"><q-n>     65  </q-n></a><q-w>endtask</q-w>
+<a name="66"><q-n>     66  </q-n></a>
+<a name="67"><q-n>     67  </q-n></a><q-w>task</q-w> Scoreboard::check();
+<a name="68"><q-n>     68  </q-n></a>	
+<a name="69"><q-n>     69  </q-n></a>       $display($<q-w>time</q-w>, <q-l>"ns: [CHECKER] Checker Start\n\n"</q-l>);		
+<a name="70"><q-n>     70  </q-n></a>       <q-m>// Grab packet sent from scoreboard 				</q-m>
+<a name="71"><q-n>     71  </q-n></a>       $display($<q-w>time</q-w>, <q-l>"ns:   [CHECKER] Pkt Contents: src1 = %h, src2 = %h, imm = %h, "</q-l>, pkt_sent.src1, pkt_sent.src2, pkt_sent.imm);
+<a name="72"><q-n>     72  </q-n></a>       $display($<q-w>time</q-w>, <q-l>"ns:   [CHECKER] Pkt Contents: opselect = %b, immp_regn = %b, operation = %b, "</q-l>, pkt_sent.opselect_gen, pkt_sent.immp_regn_op_gen, pkt_sent.operation_gen);
+<a name="73"><q-n>     73  </q-n></a>       
+<a name="74"><q-n>     74  </q-n></a>       check_arith();
+<a name="75"><q-n>     75  </q-n></a>       check_preproc();
+<a name="76"><q-n>     76  </q-n></a>
+<a name="77"><q-n>     77  </q-n></a><q-w>endtask</q-w>
+<a name="78"><q-n>     78  </q-n></a>
+<a name="79"><q-n>     79  </q-n></a><q-w>task</q-w> Scoreboard::check_arith();
+<a name="80"><q-n>     80  </q-n></a>       $display($<q-w>time</q-w>, <q-l>"ns:  	[CHECK_ARITH] Golden Incoming Arithmetic enable = %b"</q-l>, enable_arith_chk);
+<a name="81"><q-n>     81  </q-n></a>       $display($<q-w>time</q-w>, <q-l>"ns:  	[CHECK_ARITH] Golden Incoming ALUIN = %h  %h "</q-l>, aluin1_chk, aluin2_chk);
+<a name="82"><q-n>     82  </q-n></a>       $display($<q-w>time</q-w>, <q-l>"ns:  	[CHECK_ARITH] Golden Incoming CONTROL = %3b(opselect)  %3b(operation) "</q-l>, opselect_chk, operation_chk);
+<a name="83"><q-n>     83  </q-n></a>       <q-w>if</q-w>(1 == enable_arith_chk) <q-w>begin</q-w>
+<a name="84"><q-n>     84  </q-n></a>	       <q-w>if</q-w> ((opselect_chk == `ARITH_LOGIC))	<q-m>// arithmetic</q-m>
+<a name="85"><q-n>     85  </q-n></a>	       <q-w>begin</q-w>
+<a name="86"><q-n>     86  </q-n></a>		       <q-w>case</q-w>(operation_chk)
+<a name="87"><q-n>     87  </q-n></a>		       `ADD : 	<q-w>begin</q-w>	aluout_chk = aluin1_chk + aluin2_chk;	    <q-w>end</q-w>
+<a name="88"><q-n>     88  </q-n></a>		       `HADD: 	<q-w>begin</q-w>   {aluout_half_chk} = aluin1_chk[15:0] + aluin2_chk[15:0]; aluout_chk = {{16{aluout_half_chk[16]}},aluout_half_chk[15:0]};	<q-w>end</q-w> 
+<a name="89"><q-n>     89  </q-n></a>		       `SUB: 	<q-w>begin</q-w>   aluout_chk = aluin1_chk - aluin2_chk;    	<q-w>end</q-w> 
+<a name="90"><q-n>     90  </q-n></a>		       `NOT: 	<q-w>begin</q-w>   aluout_chk = ~aluin2_chk;    				<q-w>end</q-w> 
+<a name="91"><q-n>     91  </q-n></a>		       `AND: 	<q-w>begin</q-w>   aluout_chk = aluin1_chk &amp; aluin2_chk;    	<q-w>end</q-w>
+<a name="92"><q-n>     92  </q-n></a>		       `OR: 	<q-w>begin</q-w>   aluout_chk = aluin1_chk | aluin2_chk;    	<q-w>end</q-w>
+<a name="93"><q-n>     93  </q-n></a>		       `XOR: 	<q-w>begin</q-w>   aluout_chk = aluin1_chk ^ aluin2_chk;      	<q-w>end</q-w>
+<a name="94"><q-n>     94  </q-n></a>		       `LHG: 	<q-w>begin</q-w>   aluout_chk = {aluin2_chk[15:0],{16{1'b0}}};	<q-w>end</q-w>
+<a name="95"><q-n>     95  </q-n></a>		       <q-w>endcase</q-w>
+<a name="96"><q-n>     96  </q-n></a>	       <q-w>end</q-w>
+<a name="97"><q-n>     97  </q-n></a>		   <q-w>if</q-w> ((opselect_chk == `MEM_READ))
+<a name="98"><q-n>     98  </q-n></a>		   <q-w>begin</q-w>
+<a name="99"><q-n>     99  </q-n></a>				<q-w>case</q-w>(operation_chk)
+<a name="100"><q-n>     100  </q-n></a>				`LOADBYTE :		<q-w>begin</q-w> 
+<a name="101"><q-n>     101  </q-n></a>									aluout_chk = {0, aluin2_chk[7:0]};
+<a name="102"><q-n>     102  </q-n></a>									<q-w>if</q-w> (aluin2_chk[7] == 1'b0) <q-w>begin</q-w>
+<a name="103"><q-n>     103  </q-n></a>										aluout_chk ={aluout_chk[`REGISTER_WIDTH -1:8], aluin2_chk[7:0]};
+<a name="104"><q-n>     104  </q-n></a>									<q-w>end</q-w>
+<a name="105"><q-n>     105  </q-n></a>									<q-w>else</q-w> <q-w>begin</q-w>
+<a name="106"><q-n>     106  </q-n></a>										aluout_chk ={~aluout_chk[`REGISTER_WIDTH -1:8], aluin2_chk[7:0]};
+<a name="107"><q-n>     107  </q-n></a>									<q-w>end</q-w>
+<a name="108"><q-n>     108  </q-n></a>								<q-w>end</q-w> 
+<a name="109"><q-n>     109  </q-n></a>				`LOADBYTEU : 	<q-w>begin</q-w> 	
+<a name="110"><q-n>     110  </q-n></a>									aluout_chk = {0, aluin2_chk[7:0]};
+<a name="111"><q-n>     111  </q-n></a>								<q-w>end</q-w> 
+<a name="112"><q-n>     112  </q-n></a>				`LOADHALF : 	<q-w>begin</q-w> 
+<a name="113"><q-n>     113  </q-n></a>									aluout_chk = {0, aluin2_chk[15:0]};
+<a name="114"><q-n>     114  </q-n></a>									<q-w>if</q-w> (aluin2_chk[15] == 1'b0) <q-w>begin</q-w>
+<a name="115"><q-n>     115  </q-n></a>										aluout_chk ={aluout_chk[`REGISTER_WIDTH -1:16], aluin2_chk[15:0]};
+<a name="116"><q-n>     116  </q-n></a>									<q-w>end</q-w>
+<a name="117"><q-n>     117  </q-n></a>									<q-w>else</q-w> <q-w>begin</q-w>
+<a name="118"><q-n>     118  </q-n></a>										aluout_chk ={~aluout_chk[`REGISTER_WIDTH -1:16], aluin2_chk[15:0]};
+<a name="119"><q-n>     119  </q-n></a>									<q-w>end</q-w>
+<a name="120"><q-n>     120  </q-n></a>								<q-w>end</q-w> 
+<a name="121"><q-n>     121  </q-n></a>				`LOADHALFU :    <q-w>begin</q-w> 	
+<a name="122"><q-n>     122  </q-n></a>									aluout_chk = {0, aluin2_chk[15:0]};
+<a name="123"><q-n>     123  </q-n></a>								<q-w>end</q-w>
+<a name="124"><q-n>     124  </q-n></a>				`LOADWORD :		<q-w>begin</q-w> aluout_chk = aluin2_chk; <q-w>end</q-w>
+<a name="125"><q-n>     125  </q-n></a>				<q-w>default</q-w> :		<q-w>begin</q-w> aluout_chk = aluin2_chk; <q-w>end</q-w>
+<a name="126"><q-n>     126  </q-n></a>		   		<q-w>endcase</q-w> 
+<a name="127"><q-n>     127  </q-n></a>		   <q-w>end</q-w>
+<a name="128"><q-n>     128  </q-n></a>	<q-w>end</q-w>
+<a name="129"><q-n>     129  </q-n></a>	<q-w>else</q-w> <q-w>if</q-w> (enable_shift_chk == 1) <q-w>begin</q-w>
+<a name="130"><q-n>     130  </q-n></a>		<q-w>if</q-w> ((opselect_chk == `SHIFT_REG)) <q-w>begin</q-w> 
+<a name="131"><q-n>     131  </q-n></a>        		<q-w>case</q-w>(operation_chk)
+<a name="132"><q-n>     132  </q-n></a>            			`SHLEFTLOG: <q-w>begin</q-w> <q-m>// SHLEFTLOG</q-m>
+<a name="133"><q-n>     133  </q-n></a>                			aluout_chk = {aluin1_chk &lt;&lt; shift_number_chk}; 
+<a name="134"><q-n>     134  </q-n></a>            			<q-w>end</q-w>
+<a name="135"><q-n>     135  </q-n></a>            			`SHLEFTART: <q-w>begin</q-w> <q-m>// SHLEFTART</q-m>
+<a name="136"><q-n>     136  </q-n></a>                			aluout_chk = {aluin1_chk[31:1] &lt;&lt; shift_number_chk, aluin1_chk[0] }; 
+<a name="137"><q-n>     137  </q-n></a>            			<q-w>end</q-w>
+<a name="138"><q-n>     138  </q-n></a>            			`SHRGHTLOG: <q-w>begin</q-w> <q-m>// SHRGHTLOG</q-m>
+<a name="139"><q-n>     139  </q-n></a>                			aluout_chk = {aluin1_chk &gt;&gt; shift_number_chk};
+<a name="140"><q-n>     140  </q-n></a>                    		<q-w>end</q-w>
+<a name="141"><q-n>     141  </q-n></a>                		`SHRGHTART: <q-w>begin</q-w> <q-m>//SHRGHTART</q-m>
+<a name="142"><q-n>     142  </q-n></a>                			aluout_chk = {{aluin1_chk[31]}, aluin1_chk[30:0] &gt;&gt; shift_number_chk};
+<a name="143"><q-n>     143  </q-n></a>                		<q-w>end</q-w>
+<a name="144"><q-n>     144  </q-n></a>            			<q-w>default</q-w>: aluout_chk = aluin1_chk; <q-m>// Default NO CHANGE</q-m>
+<a name="145"><q-n>     145  </q-n></a>        		<q-w>endcase</q-w>
+<a name="146"><q-n>     146  </q-n></a>		<q-w>end</q-w>
+<a name="147"><q-n>     147  </q-n></a>	<q-w>end</q-w>       
+<a name="148"><q-n>     148  </q-n></a>	<q-w>else</q-w>
+<a name="149"><q-n>     149  </q-n></a>       		aluout_chk = 0;
+<a name="150"><q-n>     150  </q-n></a>
+<a name="151"><q-n>     151  </q-n></a>	<q-w>assert</q-w> (pkt2cmp.aluout == aluout_chk) $display($<q-w>time</q-w>, <q-l>"ns:   [CHECKER CORRECT] ALUOUT: DUT = %h   &amp; Golden Model = %h\n"</q-l>, pkt2cmp.aluout, aluout_chk); 
+<a name="152"><q-n>     152  </q-n></a>	<q-w>else</q-w> $display($<q-w>time</q-w>, <q-l>"ns:   [CHECKER BUG] ALUOUT: DUT = %h   &amp; Golden Model = %h\n"</q-l>, pkt2cmp.aluout, aluout_chk);	
+<a name="153"><q-n>     153  </q-n></a>
+<a name="154"><q-n>     154  </q-n></a><q-w>endtask</q-w>	
+<a name="155"><q-n>     155  </q-n></a>
+<a name="156"><q-n>     156  </q-n></a><q-w>task</q-w> Scoreboard::check_preproc();
+<a name="157"><q-n>     157  </q-n></a>
+<a name="158"><q-n>     158  </q-n></a>       <q-w>if</q-w> (((pkt_sent.opselect_gen == `ARITH_LOGIC)||((pkt_sent.opselect_gen == `MEM_READ) &amp;&amp; (pkt_sent.immp_regn_op_gen==1))) &amp;&amp; pkt_sent.enable) <q-w>begin</q-w>
+<a name="159"><q-n>     159  </q-n></a>	       enable_arith_chk = 1'b1;
+<a name="160"><q-n>     160  </q-n></a>       <q-w>end</q-w>
+<a name="161"><q-n>     161  </q-n></a>       <q-w>else</q-w> <q-w>begin</q-w>
+<a name="162"><q-n>     162  </q-n></a>	       enable_arith_chk = 1'b0;
+<a name="163"><q-n>     163  </q-n></a>       <q-w>end</q-w>
+<a name="164"><q-n>     164  </q-n></a>
+<a name="165"><q-n>     165  </q-n></a>       <q-w>if</q-w> ((pkt_sent.opselect_gen == `SHIFT_REG)&amp;&amp; pkt_sent.enable) <q-w>begin</q-w>
+<a name="166"><q-n>     166  </q-n></a>	       enable_shift_chk = 1'b1;
+<a name="167"><q-n>     167  </q-n></a>       <q-w>end</q-w>
+<a name="168"><q-n>     168  </q-n></a>       <q-w>else</q-w> <q-w>begin</q-w>
+<a name="169"><q-n>     169  </q-n></a>	       enable_shift_chk = 1'b0;
+<a name="170"><q-n>     170  </q-n></a>       <q-w>end</q-w>
+<a name="171"><q-n>     171  </q-n></a>
+<a name="172"><q-n>     172  </q-n></a>       <q-w>if</q-w> (((pkt_sent.opselect_gen == `ARITH_LOGIC)||((pkt_sent.opselect_gen == `MEM_READ) &amp;&amp; (pkt_sent.immp_regn_op_gen==1))) &amp;&amp; pkt_sent.enable) <q-w>begin</q-w> 
+<a name="173"><q-n>     173  </q-n></a>	       <q-w>if</q-w>((1 == pkt_sent.immp_regn_op_gen)) <q-w>begin</q-w>
+<a name="174"><q-n>     174  </q-n></a>		       <q-w>if</q-w> (pkt_sent.opselect_gen == `MEM_READ) <q-m>// memory read operation that needs to go to dest </q-m>
+<a name="175"><q-n>     175  </q-n></a>			       aluin2_chk = pkt_sent.mem_data;
+<a name="176"><q-n>     176  </q-n></a>		       <q-w>else</q-w> <q-m>// here we assume that the operation must be a arithmetic operation</q-m>
+<a name="177"><q-n>     177  </q-n></a>			       aluin2_chk = pkt_sent.imm;
+<a name="178"><q-n>     178  </q-n></a>	       <q-w>end</q-w>
+<a name="179"><q-n>     179  </q-n></a>	       <q-w>else</q-w> <q-w>begin</q-w>
+<a name="180"><q-n>     180  </q-n></a>		       aluin2_chk = pkt_sent.src2;
+<a name="181"><q-n>     181  </q-n></a>	       <q-w>end</q-w>
+<a name="182"><q-n>     182  </q-n></a>       <q-w>end</q-w>
+<a name="183"><q-n>     183  </q-n></a>
+<a name="184"><q-n>     184  </q-n></a>       <q-w>if</q-w>(pkt_sent.enable) <q-w>begin</q-w>
+<a name="185"><q-n>     185  </q-n></a>	       aluin1_chk = pkt_sent.src1;
+<a name="186"><q-n>     186  </q-n></a>	       operation_chk = pkt_sent.operation_gen;
+<a name="187"><q-n>     187  </q-n></a>	       opselect_chk = pkt_sent.opselect_gen;
+<a name="188"><q-n>     188  </q-n></a>       <q-w>end</q-w>
+<a name="189"><q-n>     189  </q-n></a>
+<a name="190"><q-n>     190  </q-n></a>       <q-w>if</q-w> ((pkt_sent.opselect_gen == `SHIFT_REG)&amp;&amp; pkt_sent.enable) <q-w>begin</q-w>
+<a name="191"><q-n>     191  </q-n></a>  		<q-w>if</q-w> (pkt_sent.imm[2] == 1'b0) 
+<a name="192"><q-n>     192  </q-n></a>       		shift_number_chk = pkt_sent.imm[10:6];
+<a name="193"><q-n>     193  </q-n></a>   		<q-w>else</q-w> 
+<a name="194"><q-n>     194  </q-n></a>       		shift_number_chk = pkt_sent.src2[4:0];
+<a name="195"><q-n>     195  </q-n></a>	<q-w>end</q-w>
+<a name="196"><q-n>     196  </q-n></a>	<q-w>else</q-w> 
+<a name="197"><q-n>     197  </q-n></a>   		shift_number_chk = 0;	
+<a name="198"><q-n>     198  </q-n></a>	memout_chk = pkt_sent.src2;
+<a name="199"><q-n>     199  </q-n></a>	
+<a name="200"><q-n>     200  </q-n></a>
+<a name="201"><q-n>     201  </q-n></a>	<q-w>if</q-w>((pkt_sent.opselect_gen == `MEM_WRITE) &amp;&amp; (pkt_sent.immp_regn_op_gen == 1)) mem_en_chk = 1;
+<a name="202"><q-n>     202  </q-n></a>	<q-w>else</q-w> mem_en_chk = 0;
+<a name="203"><q-n>     203  </q-n></a>
+<a name="204"><q-n>     204  </q-n></a>	<q-w>assert</q-w>(pkt2cmp.mem_data_write_out == memout_chk) $display($<q-w>time</q-w>, <q-l>"ns: MEM_WRITE TRUE mem_DUT = %h    mem_GOL = %h\n"</q-l>, pkt2cmp.mem_data_write_out, memout_chk);
+<a name="205"><q-n>     205  </q-n></a>		<q-w>else</q-w> $display($<q-w>time</q-w>, <q-l>"ns: MEM_WRITE FAIL mem_DUT = %h    mem_GOL = %h\n"</q-l>, pkt2cmp.mem_data_write_out, memout_chk);
+<a name="206"><q-n>     206  </q-n></a>
+<a name="207"><q-n>     207  </q-n></a>
+<a name="208"><q-n>     208  </q-n></a>
+<a name="209"><q-n>     209  </q-n></a>	<q-w>assert</q-w>(pkt2cmp.mem_write_en == mem_en_chk) $display($<q-w>time</q-w>, <q-l>"ns: MEM_EN TRUE mem_DUT = %h    mem_GOL = %h\n"</q-l>, pkt2cmp.mem_write_en, mem_en_chk);
+<a name="210"><q-n>     210  </q-n></a>		<q-w>else</q-w> $display($<q-w>time</q-w>, <q-l>"ns: MEM_EN FAIL mem_DUT = %h    mem_GOL = %h\n"</q-l>, pkt2cmp.mem_write_en, mem_en_chk);
+<a name="211"><q-n>     211  </q-n></a>
+<a name="212"><q-n>     212  </q-n></a>	<q-w>assert</q-w> (pkt2cmp.aluin1 == aluin1_chk) <q-w>else</q-w>
+<a name="213"><q-n>     213  </q-n></a>	       $display($<q-w>time</q-w>, <q-l>"ns:   [CHECK_PREPROC BUG] ALUIN1: DUT = %h   &amp; Golden Model = %h\n"</q-l>, pkt2cmp.aluin1, aluin1_chk);	
+<a name="214"><q-n>     214  </q-n></a>	<q-w>assert</q-w> (pkt2cmp.aluin2 == aluin2_chk) <q-w>else</q-w>      
+<a name="215"><q-n>     215  </q-n></a>	       $display($<q-w>time</q-w>, <q-l>"ns:   [CHECK_PREPROC BUG] ALUIN2: DUT = %h   &amp; Golden Model = %h\n"</q-l>, pkt2cmp.aluin2, aluin2_chk);	
+<a name="216"><q-n>     216  </q-n></a>        <q-w>assert</q-w> (pkt2cmp.enable_arith == enable_arith_chk) <q-w>else</q-w>
+<a name="217"><q-n>     217  </q-n></a>	       $display($<q-w>time</q-w>, <q-l>"ns:   [CHECK_PREPROC BUG] ENABLE_ARITH: DUT = %b   &amp; Golden Model = %b\n"</q-l>, pkt2cmp.enable_arith, enable_arith_chk);	
+<a name="218"><q-n>     218  </q-n></a>       	<q-w>assert</q-w> (pkt2cmp.enable_shift == enable_shift_chk) <q-w>else</q-w>
+<a name="219"><q-n>     219  </q-n></a>	       $display($<q-w>time</q-w>, <q-l>"ns:   [CHECK_PREPROC BUG] ENABLE_SHIFT: DUT = %h   &amp; Golden Model = %h\n"</q-l>, pkt2cmp.enable_shift, enable_shift_chk);	
+<a name="220"><q-n>     220  </q-n></a>       	<q-w>assert</q-w> (pkt2cmp.operation == operation_chk) <q-w>else</q-w>
+<a name="221"><q-n>     221  </q-n></a>	       $display($<q-w>time</q-w>, <q-l>"ns:   [CHECK_PREPROC BUG] OPERATION: DUT = %h   &amp; Golden Model = %h\n"</q-l>, pkt2cmp.operation, operation_chk);	
+<a name="222"><q-n>     222  </q-n></a>	<q-w>assert</q-w> (pkt2cmp.opselect == opselect_chk) <q-w>else</q-w>	       
+<a name="223"><q-n>     223  </q-n></a>	       $display($<q-w>time</q-w>, <q-l>"ns:   [CHECK_PREPROC BUG] OPSELECT: DUT = %h   &amp; Golden Model = %h\n"</q-l>, pkt2cmp.opselect, opselect_chk);
+<a name="224"><q-n>     224  </q-n></a>	<q-w>assert</q-w> (pkt2cmp.shift_number == shift_number_chk) <q-w>else</q-w>	       	
+<a name="225"><q-n>     225  </q-n></a>	       $display($<q-w>time</q-w>, <q-l>"ns:   [CHECK_PREPROC BUG] SHIFT_NUMBER: DUT = %h   &amp; Golden Model = %h\n"</q-l>, pkt2cmp.shift_number, shift_number_chk);	
+<a name="226"><q-n>     226  </q-n></a>
+<a name="227"><q-n>     227  </q-n></a>
+<a name="228"><q-n>     228  </q-n></a><q-w>endtask</q-w></pre>
+</tt>
+
+  
+</body>
+</html>

@@ -7,12 +7,12 @@
 `define     MEM_READ            3'b101
 `define     MEM_WRITE           3'b100
 `define     ARITH_LOGIC     	3'b001
-`define     SHIFT_REG		3'b000
+`define     SHIFT_REG		    3'b000
 
 // ARITHMETIC
-`define     ADD		        3'b000
+`define     ADD		            3'b000
 `define     HADD            	3'b001
-`define     SUB		        3'b010
+`define     SUB		            3'b010
 `define     NOT	            	3'b011
 `define     AND        	        3'b100
 `define     OR        	        3'b101
@@ -20,7 +20,7 @@
 `define     LHG       	        3'b111
 
 // SHIFTING
-`define     SHLEFTLOG		3'b000
+`define     SHLEFTLOG		    3'b000
 `define     SHLEFTART         	3'b001
 `define     SHRGHTLOG         	3'b010
 `define     SHRGHTART         	3'b011

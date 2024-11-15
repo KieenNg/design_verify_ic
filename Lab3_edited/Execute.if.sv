@@ -40,6 +40,6 @@ interface DUT_probe_if(
 	input logic [4:0]      			shift_number,
 	input logic 				enable_shift, 
 	input logic 				enable_arith 
-	);
+);
 endinterface
 	

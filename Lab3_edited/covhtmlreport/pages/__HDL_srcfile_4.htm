@@ -1,0 +1,85 @@
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <title>Questa Coverage Report</title>
+  <link rel="StyleSheet" media="screen" href="../css/hdl2html.css"/>
+</head>
+<body id="hdl2html">
+  <tt>
+<pre>
+<a name="1"><q-n>     1  </q-n></a>`<q-i>include</q-w> <q-l>"data_defs.v"</q-l>
+<a name="2"><q-n>     2  </q-n></a><q-w>module</q-w> Ex_Preproc  (   clock, reset, enable_ex, src1, src2, imm, control_in, 
+<a name="3"><q-n>     3  </q-n></a>                    mem_data_read_in, mem_data_write_out, mem_write_en, 
+<a name="4"><q-n>     4  </q-n></a>					aluin1, aluin2, opselect_out, operation_out, shift_number, 
+<a name="5"><q-n>     5  </q-n></a>					enable_shift, enable_arith
+<a name="6"><q-n>     6  </q-n></a>                );
+<a name="7"><q-n>     7  </q-n></a>
+<a name="8"><q-n>     8  </q-n></a>    <q-w>parameter</q-w>   instr_wd  	=   `INSTR_WIDTH;
+<a name="9"><q-n>     9  </q-n></a>    <q-w>parameter</q-w>   reg_wd    	=   `REGISTER_WIDTH;
+<a name="10"><q-n>     10  </q-n></a>    <q-w>parameter</q-w>   imm_wd    	=   `IMMEDIATE_WIDTH;
+<a name="11"><q-n>     11  </q-n></a>
+<a name="12"><q-n>     12  </q-n></a>    <q-w>input</q-w> 					            clock, reset, enable_ex;
+<a name="13"><q-n>     13  </q-n></a>	<q-w>input</q-w>  	 		[reg_wd -1:0]       src1, src2; 
+<a name="14"><q-n>     14  </q-n></a>	<q-w>input</q-w> 	 		[reg_wd -1:0]       imm;
+<a name="15"><q-n>     15  </q-n></a>	<q-w>input</q-w> 		    [6:0]			    control_in;
+<a name="16"><q-n>     16  </q-n></a>    <q-m>// the data that was read in the Decode stage</q-m>
+<a name="17"><q-n>     17  </q-n></a>	<q-w>input</q-w>	 		[reg_wd	-1:0]		mem_data_read_in; 
+<a name="18"><q-n>     18  </q-n></a>    <q-m>// data that is going to be written to the memory </q-m>
+<a name="19"><q-n>     19  </q-n></a>	<q-w>output</q-w>  	    [reg_wd -1:0]       mem_data_write_out; 
+<a name="20"><q-n>     20  </q-n></a>    <q-m>// enable for writing to memory   </q-m>
+<a name="21"><q-n>     21  </q-n></a>	<q-w>output</q-w>  	 	[reg_wd -1:0]  		aluin1, aluin2; 
+<a name="22"><q-n>     22  </q-n></a>	<q-w>output</q-w>	        [2:0]			    operation_out;
+<a name="23"><q-n>     23  </q-n></a>	<q-w>output</q-w>	        [2:0]               opselect_out;	
+<a name="24"><q-n>     24  </q-n></a>	<q-w>output</q-w>          [4:0]          		shift_number;
+<a name="25"><q-n>     25  </q-n></a>    <q-w>output</q-w>                            	enable_shift, enable_arith;
+<a name="26"><q-n>     26  </q-n></a>	
+<a name="27"><q-n>     27  </q-n></a>    <q-w>output</q-w>					            mem_write_en;  
+<a name="28"><q-n>     28  </q-n></a>
+<a name="29"><q-n>     29  </q-n></a>	<q-m>// Intermediate Signals</q-m>
+<a name="30"><q-n>     30  </q-n></a>	<q-w>reg</q-w>					                mem_write_en;
+<a name="31"><q-n>     31  </q-n></a>	
+<a name="32"><q-n>     32  </q-n></a>	<q-w>reg</q-w>  	 		[reg_wd -1:0]  		aluin1, aluin2; 
+<a name="33"><q-n>     33  </q-n></a>	<q-w>reg</q-w> 	        [2:0]			    opselect_out;
+<a name="34"><q-n>     34  </q-n></a>	<q-w>reg</q-w> 	        [2:0]               operation_out;	
+<a name="35"><q-n>     35  </q-n></a>	
+<a name="36"><q-n>     36  </q-n></a>	<q-w>wire</q-w>	        [2:0]			    opselect;
+<a name="37"><q-n>     37  </q-n></a>	<q-w>wire</q-w>				                immp_regn_op;
+<a name="38"><q-n>     38  </q-n></a>	<q-w>wire</q-w> 	        [2:0]               operation;	
+<a name="39"><q-n>     39  </q-n></a>
+<a name="40"><q-n>     40  </q-n></a>    <q-w>reg</q-w>          	[4:0]            	shift_number;
+<a name="41"><q-n>     41  </q-n></a>	
+<a name="42"><q-n>     42  </q-n></a>    <q-w>reg</q-w>                                 enable_shift, enable_arith;
+<a name="43"><q-n>     43  </q-n></a>	
+<a name="44"><q-n>     44  </q-n></a>	<q-w>assign</q-w>	{operation, immp_regn_op,opselect} = control_in;
+<a name="45"><q-n>     45  </q-n></a>    <q-m>// control[2:0] = opselect: selects type of operand to be used i.e. memory, register or immediate</q-m>
+<a name="46"><q-n>     46  </q-n></a>    <q-m>// control[3]  = immp_regn_op: 1=&gt; immediate operation &amp; 0: register operation</q-m>
+<a name="47"><q-n>     47  </q-n></a>    <q-m>// control[6:4] =  operation: selects type of operation to be performed i.e. arithmetic, shifting etc </q-m>
+<a name="48"><q-n>     48  </q-n></a>    
+<a name="49"><q-n>     49  </q-n></a>`protected 
+<a name="50"><q-n>     50  </q-n></a>    MTI!#QxTnECX-eoQUovHDh\}'UDjxo,RxCoir[I3lK|,!Y3xO,[SHX{EOCCjeKzw,^3'Yv][Qul!
+<a name="51"><q-n>     51  </q-n></a>    ]zpVB{X!$Ajr@'lRY+{Ku$X*$H\Ev+!OYC}zb~_OT7rZ_oO!;\!Iw=fRGiT],wWce3V?VCl;y=#r
+<a name="52"><q-n>     52  </q-n></a>    @|@5nkl,{7sOTs&gt;nrB-Ue7UpoGv-RAWwGlwwZXx=JRn$KzR5GT?&lt;!r53E&lt;l*aO0*A&lt;BXYuZz#aJ{
+<a name="53"><q-n>     53  </q-n></a>    [pi*vs[pxzI=t1,7ib:*Xa'K+^oF~I#Q[?j}?$!#e!!Z:9#'~nIYX!T$Jss*Aj"U&gt;@CF*zeA_WoK
+<a name="54"><q-n>     54  </q-n></a>    Tr{-]z'\lOin,X1Z[{*KR?IO=zoz@&lt;N!Iu1mj3oO,TJbEjDiTa}=yQ5^1]{t5kopemlwAH1Hws#B
+<a name="55"><q-n>     55  </q-n></a>    Yx+BBB;_g)DO-;^In={Uovellr&gt;,W[R-3ZZV^i[TN{TED]3R&gt;ew*e=~KHs@Wj4HTo~G?!VQ@75oo
+<a name="56"><q-n>     56  </q-n></a>    w}Dv~@7wQD'G~;zEXUj*G#zOvlNliJ1BAuuQC~3Hp^p7H*1TppOe&lt;Zv$sI[#YB2qvQ&lt;kyIQ@@m=]
+<a name="57"><q-n>     57  </q-n></a>    T$Y-G]]Y~CBC-w-oae;XYX]^xYmXe\Ql?/6l&gt;{A}&gt;oAMk5K*?r\KwaCBkHn&gt;LoZKvz~+&lt;WD3Wv_E
+<a name="58"><q-n>     58  </q-n></a>    ],_CB1O+Z&amp;qwY'Oil$A_u[E!=HvDr;?i9j2j{_kpx,1H\^1x2#*}i=SA=xXt|m[[WI3UaOv+Wh{U
+<a name="59"><q-n>     59  </q-n></a>    @*o,IKBA&gt;;B+3]^,sixArC=_eu]BkKO!{AGH7l1+j^QG5DTVW@;Hpik+jKZX\u+&lt;-}&lt;eT^AVaGG#
+<a name="60"><q-n>     60  </q-n></a>    Ju[+B@_eJ&gt;EiGELrDET&lt;e['Q3OT-Y]w[Yp1X-}])w^e2G=Q1i_x[-weR&gt;eoe]+zKF}*Q3v,&gt;J?}V
+<a name="61"><q-n>     61  </q-n></a>    H^\@;*'j&gt;x+a2}+RQnC&gt;7oV@rkVzp[-~YR}?a0{V&lt;_+Avzp#o3{+m[4;l3DQ]\\$LvprE_+!**6&gt;
+<a name="62"><q-n>     62  </q-n></a>    *n@^'nD!$IZSQQg[{^2*Ou'aB3~rQ{!+7355I-Tpe?GCl^Cu1Onn1m~?,RVE}1B}o@mB11k#I3VQ
+<a name="63"><q-n>     63  </q-n></a>    DJT5]55rZoOsGA}j~Y^HTeE5?^rAEr7=$XBkjE-BJz$#apIg\~pxXI{]^\z_]plC5qB;^oQ{QmzO
+<a name="64"><q-n>     64  </q-n></a>    O-_m,[IRHK5G=^kGGH[^,k=uIJ!n5i^ZsJzHIZ$xQzk+]Q~DWBpsp}}[?,{141|ip^{*&gt;Gwura1'
+<a name="65"><q-n>     65  </q-n></a>    YKQ}m,?{EXehIpx{TRIxf8eKU=g}p{Hn-~o;}Y^*s_ApADx_^am[7]m'zWYVZZV1'\sZ,3UYCeB{
+<a name="66"><q-n>     66  </q-n></a>    ]B#]?^iR}r~_@RH_go,Xo+^VHVA_O9D&gt;HjD]r}2n^OvKQidmwjH}W&lt;~z*+IvZ}
+<a name="67"><q-n>     67  </q-n></a>`endprotected
+<a name="68"><q-n>     68  </q-n></a>   
+<a name="69"><q-n>     69  </q-n></a><q-w>endmodule</q-w>
+</pre>
+</tt>
+
+  
+</body>
+</html>

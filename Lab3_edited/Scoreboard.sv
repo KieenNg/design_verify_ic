@@ -12,6 +12,10 @@ class Scoreboard;
     typedef mailbox #(OutputPacket) rx_box_type;
     rx_box_type 	receiver_mbox;		// mailbox for Packet objects from Receiver
 
+	int num_test;
+	int num_pass;
+	int num_fail;
+
 	// Declare the signals to be compared over here.
        reg	[`REGISTER_WIDTH-1:0] 	aluout_chk = 0;
        reg				mem_en_chk = 0;
@@ -29,6 +33,7 @@ class Scoreboard;
        extern virtual task check();
        extern virtual task check_arith();
        extern virtual task check_preproc();
+	   extern virtual task result();
 	
 endclass
 
@@ -73,7 +78,7 @@ task Scoreboard::check();
        
        check_arith();
        check_preproc();
-
+		result();
 endtask
 
 task Scoreboard::check_arith();
@@ -87,7 +92,7 @@ task Scoreboard::check_arith();
 		       `ADD : 	begin	aluout_chk = aluin1_chk + aluin2_chk;	    end
 		       `HADD: 	begin   {aluout_half_chk} = aluin1_chk[15:0] + aluin2_chk[15:0]; aluout_chk = {{16{aluout_half_chk[16]}},aluout_half_chk[15:0]};	end 
 		       `SUB: 	begin   aluout_chk = aluin1_chk - aluin2_chk;    	end 
-		       `NOT: 	begin   aluout_chk = ~aluin2_chk;    	end 
+		       `NOT: 	begin   aluout_chk = ~aluin2_chk;    				end 
 		       `AND: 	begin   aluout_chk = aluin1_chk & aluin2_chk;    	end
 		       `OR: 	begin   aluout_chk = aluin1_chk | aluin2_chk;    	end
 		       `XOR: 	begin   aluout_chk = aluin1_chk ^ aluin2_chk;      	end
@@ -201,28 +206,93 @@ task Scoreboard::check_preproc();
 	if((pkt_sent.opselect_gen == `MEM_WRITE) && (pkt_sent.immp_regn_op_gen == 1)) mem_en_chk = 1;
 	else mem_en_chk = 0;
 
-	assert(pkt2cmp.mem_data_write_out == memout_chk) $display($time, "ns: MEM_WRITE TRUE mem_DUT = %h    mem_GOL = %h\n", pkt2cmp.mem_data_write_out, memout_chk);
-		else $display($time, "ns: MEM_WRITE FAIL mem_DUT = %h    mem_GOL = %h\n", pkt2cmp.mem_data_write_out, memout_chk);
+	ASSERT_mem_data_write_out: assert(pkt2cmp.mem_data_write_out == memout_chk) begin 
+		$display($time, "ns: [ASSERT_mem_data_write_out] MEM_WRITE TRUE mem_DUT = %h    mem_GOL = %h\n", pkt2cmp.mem_data_write_out, memout_chk);
+		num_test++;
+		num_pass++;
+	end else begin 
+		$display($time, "ns: [ASSERT_mem_data_write_out] MEM_WRITE FAIL mem_DUT = %h    mem_GOL = %h\n", pkt2cmp.mem_data_write_out, memout_chk);
+		num_test++;
+		num_fail++;
+	end
 
+	ASSERT_mem_data_write_en: assert(pkt2cmp.mem_write_en == mem_en_chk) begin
+		$display($time, "ns: [ASSERT_mem_data_write_en] MEM_EN TRUE mem_DUT = %h    mem_GOL = %h\n", pkt2cmp.mem_write_en, mem_en_chk);
+		num_test++;
+		num_pass++;
+	end else begin 
+		$display($time, "ns: [ASSERT_mem_data_write_en] MEM_EN FAIL mem_DUT = %h    mem_GOL = %h\n", pkt2cmp.mem_write_en, mem_en_chk);
+		num_test++;
+		num_fail++;
+	end
+	ASSERT_aluin1: assert (pkt2cmp.aluin1 == aluin1_chk) begin 
+		$display($time, "ns: [ASSERT_aluin1] PASS ALUin1 = %h	& 	golden_ALUin1 = %h", pkt2cmp.aluin1, aluin1_chk);
+		num_test++;
+		num_pass++;
+	end else begin
+	    $display($time, "ns:   [ASSERT_aluin1] ALUIN1: DUT = %h   & golden_ALUin1 = %h\n", pkt2cmp.aluin1, aluin1_chk);	
+		num_test++;
+		num_fail++;
+	end
+	ASSERT_aluin2: assert (pkt2cmp.aluin2 == aluin2_chk) begin 
+		$display($time, "ns:   [ASSERT_aluin2] ALUIN2: DUT = %h   & golden_ALUin2 = %h\n", pkt2cmp.aluin2, aluin2_chk);
+		num_test++;
+		num_pass++;
+	end else begin       
+	    $display($time, "ns:   [ASSERT_aluin2] ALUIN2: DUT = %h   & golden_ALUin2 = %h\n", pkt2cmp.aluin2, aluin2_chk);
+		num_test++;
+		num_fail++;	
+	end
+	ASSERT_enable_arith: assert (pkt2cmp.enable_arith == enable_arith_chk) begin 
+		$display($time, "ns:   [ASSERT_enable_arith] ENABLE_ARITH: DUT = %b   & Golden_enable_arith = %b\n", pkt2cmp.enable_arith, enable_arith_chk);
+		num_test++;
+		num_pass++;
+	end else begin 
+		$display($time, "ns:   [ASSERT_enable_arith] ENABLE_ARITH: DUT = %b   & Golden_enable_arith = %b\n", pkt2cmp.enable_arith, enable_arith_chk);	
+		num_test++;
+		num_fail++;
+	end
+	ASSERT_enable_shift: assert (pkt2cmp.enable_shift == enable_shift_chk) begin
+		$display($time, "ns:   [ASSERT_enable_shift] ENABLE_SHIFT: DUT = %h   & Golden_enable_shift = %h\n", pkt2cmp.enable_shift, enable_shift_chk);
+		num_test++;
+		num_pass++;
+	end else begin
+		$display($time, "ns:   [ASSERT_enable_shift] ENABLE_SHIFT: DUT = %h   & Golden_enable_shift = %h\n", pkt2cmp.enable_shift, enable_shift_chk);	
+		num_test++;
+		num_fail++;
+	end
+	ASSERT_operation: assert (pkt2cmp.operation == operation_chk) begin
+		$display($time, "ns:   [ASSERT_operation] OPERATION: DUT = %h   & Golden_operation = %h\n", pkt2cmp.operation, operation_chk);	
+		num_test++;
+		num_pass++;
+	end else begin
+		$display($time, "ns:   [ASSERT_operation] OPERATION: DUT = %h   & Golden_operation = %h\n", pkt2cmp.operation, operation_chk);	
+		num_test++;
+		num_fail++;
+	end
+	ASSERT_opselect: assert (pkt2cmp.opselect == opselect_chk) begin
+		$display($time, "ns:   [ASSERT_opselect] OPSELECT: DUT = %h   & Golden Model = %h\n", pkt2cmp.opselect, opselect_chk);
+		num_test++;
+		num_pass++;
+	end else begin	       
+	    $display($time, "ns:   [ASSERT_opselect] OPSELECT: DUT = %h   & Golden Model = %h\n", pkt2cmp.opselect, opselect_chk);
+		num_test++;
+		num_fail++;
+	end
+	ASSERT_shift_number: assert (pkt2cmp.shift_number == shift_number_chk) begin
+		$display($time, "ns:   [ASSERT_shift_number] SHIFT_NUMBER: DUT = %h   & Golden Model = %h\n", pkt2cmp.shift_number, shift_number_chk);
+		num_test++;
+		num_pass++;
+	end else begin       	
+	    $display($time, "ns:   [ASSERT_shift_number] SHIFT_NUMBER: DUT = %h   & Golden Model = %h\n", pkt2cmp.shift_number, shift_number_chk);	
+		num_test++;
+		num_fail++;
+	end
+endtask
 
-
-	assert(pkt2cmp.mem_write_en == mem_en_chk) $display($time, "ns: MEM_EN TRUE mem_DUT = %h    mem_GOL = %h\n", pkt2cmp.mem_write_en, mem_en_chk);
-		else $display($time, "ns: MEM_EN FAIL mem_DUT = %h    mem_GOL = %h\n", pkt2cmp.mem_write_en, mem_en_chk);
-
-	assert (pkt2cmp.aluin1 == aluin1_chk) else
-	       $display($time, "ns:   [CHECK_PREPROC BUG] ALUIN1: DUT = %h   & Golden Model = %h\n", pkt2cmp.aluin1, aluin1_chk);	
-	assert (pkt2cmp.aluin2 == aluin2_chk) else      
-	       $display($time, "ns:   [CHECK_PREPROC BUG] ALUIN2: DUT = %h   & Golden Model = %h\n", pkt2cmp.aluin2, aluin2_chk);	
-        assert (pkt2cmp.enable_arith == enable_arith_chk) else
-	       $display($time, "ns:   [CHECK_PREPROC BUG] ENABLE_ARITH: DUT = %b   & Golden Model = %b\n", pkt2cmp.enable_arith, enable_arith_chk);	
-       	assert (pkt2cmp.enable_shift == enable_shift_chk) else
-	       $display($time, "ns:   [CHECK_PREPROC BUG] ENABLE_SHIFT: DUT = %h   & Golden Model = %h\n", pkt2cmp.enable_shift, enable_shift_chk);	
-       	assert (pkt2cmp.operation == operation_chk) else
-	       $display($time, "ns:   [CHECK_PREPROC BUG] OPERATION: DUT = %h   & Golden Model = %h\n", pkt2cmp.operation, operation_chk);	
-	assert (pkt2cmp.opselect == opselect_chk) else	       
-	       $display($time, "ns:   [CHECK_PREPROC BUG] OPSELECT: DUT = %h   & Golden Model = %h\n", pkt2cmp.opselect, opselect_chk);
-	assert (pkt2cmp.shift_number == shift_number_chk) else	       	
-	       $display($time, "ns:   [CHECK_PREPROC BUG] SHIFT_NUMBER: DUT = %h   & Golden Model = %h\n", pkt2cmp.shift_number, shift_number_chk);	
-
+task Scoreboard::result();
+	$display($time, "ns: total assertion = %d", num_test);
+	$display($time, "ns: assertion pass = %d", num_pass);
+	$display($time, "ns: assertion fail = %d", num_fail);
 
 endtask
